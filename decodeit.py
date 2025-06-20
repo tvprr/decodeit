@@ -1,52 +1,82 @@
 import base64
-import binascii
 import urllib.parse
+import time
+import os
+from rich.console import Console
+from rich.panel import Panel
+from rich.prompt import Prompt
+
+console = Console()
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def decode_base64(s):
     try:
-        return base64.b64decode(s).decode('utf-8')
+        return base64.b64decode(s).decode('utf-8'), None
     except Exception:
-        return "❌ Invalid Base64!"
+        return None, "❌ Invalid Base64!"
 
 def decode_hex(s):
     try:
-        return bytes.fromhex(s).decode('utf-8')
+        return bytes.fromhex(s).decode('utf-8'), None
     except Exception:
-        return "❌ Invalid Hex!"
+        return None, "❌ Invalid Hex!"
 
 def decode_url(s):
     try:
-        return urllib.parse.unquote(s)
+        decoded = urllib.parse.unquote(s)
+        # Próba zakodowania do utf-8 żeby zweryfikować poprawność
+        decoded.encode('utf-8')
+        return decoded, None
     except Exception:
-        return "❌ Invalid URL encoding!"
+        return None, "❌ Invalid URL encoding!"
 
 def main():
-    print("🔓 DecodeIt - easy application to decode")
-    while True:
-        print("\nselect options:")
-        print("1) Base64 decode")
-        print("2) Hex decode")
-        print("3) URL decode")
-        print("0) leave")
+    clear_screen()
+    console.print(Panel("[bold cyan]Welcome to DecodeIt - Easy decoding tool[/bold cyan]", expand=False))
 
-        choice = input("> ").strip()
+    while True:
+        console.print(Panel.fit(
+            "\n[bold yellow]Select an option:[/bold yellow]\n"
+            "[green]1)[/green] Base64 decode\n"
+            "[green]2)[/green] Hex decode\n"
+            "[green]3)[/green] URL decode\n"
+            "[green]0)[/green] Exit\n",
+            title="[bold magenta]Menu[/bold magenta]",
+            border_style="magenta",
+        ))
+
+        choice = Prompt.ask("[bold green]Your choice[/bold green]", choices=["0", "1", "2", "3"])
 
         if choice == "0":
-            print("Bye")
+            console.print("\n[bold magenta]👋 Goodbye![/bold magenta]")
             break
 
-        if choice not in {"1", "2", "3"}:
-            print("❌ Invalid selection, please try again.")
-            continue
-
-        data = input("paste encoded text:\n> ").strip()
+        data = Prompt.ask("[bold blue]Paste your encoded text[/bold blue]")
 
         if choice == "1":
-            print("➡️ result:", decode_base64(data))
+            result, error = decode_base64(data)
         elif choice == "2":
-            print("➡️ result:", decode_hex(data))
-        elif choice == "3":
-            print("➡️ result:", decode_url(data))
+            result, error = decode_hex(data)
+        else:
+            result, error = decode_url(data)
+
+        if error:
+            clear_screen()
+            console.print(Panel(f"[bold red]{error}[/bold red]", border_style="red"))
+            console.print("[yellow]Press Enter to return to menu...[/yellow]")
+            input()
+            clear_screen()
+            console.print(Panel("[bold cyan]Welcome to DecodeIt - Easy decoding tool[/bold cyan]", expand=False))
+            continue
+
+        console.print(Panel("[cyan]➡️ Result:[/cyan]", border_style="cyan"))
+
+        for char in result:
+            print(char, end='', flush=True)
+            time.sleep(0.01)
+        print()
 
 if __name__ == "__main__":
     main()
