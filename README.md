@@ -21,11 +21,10 @@ This tool is perfect for developers, security researchers, and anyone needing to
 
 2. Download or clone this repository:
 
+```bash
 
 git clone https://github.com/tvprr/decodeit.git
 cd decodeit
-
-```bash
 
 Supported Formats
 Base64 — common encoding for data transfer
@@ -41,7 +40,9 @@ License
 This project is licensed under the MIT License — see the LICENSE file for details.
 
 Contact
-Created by sigmuszka.
+Created by tvprr.
 Reach out for questions or collaborations!
 
 Happy decoding! 🚀
+
+If you want me to help with the LICENSE file or GitHub setup, just ask!
