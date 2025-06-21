@@ -8,29 +8,47 @@ from rich.prompt import Prompt
 
 console = Console()
 
+class Result:
+    def __init__(self, ok=None, err=None):
+        self.ok = ok
+        self.err = err
+
+    @staticmethod
+    def ok(value):
+        return Result(ok=value)
+
+    @staticmethod
+    def err(error_msg):
+        return Result(err=error_msg)
+
+    def is_ok(self):
+        return self.err is None
+
+    def is_err(self):
+        return self.err is not None
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def decode_base64(s):
     try:
-        return base64.b64decode(s).decode('utf-8'), None
+        return Result.ok(base64.b64decode(s).decode('utf-8'))
     except Exception:
-        return None, "❌ Invalid Base64!"
+        return Result.err("❌ Invalid Base64!")
 
 def decode_hex(s):
     try:
-        return bytes.fromhex(s).decode('utf-8'), None
+        return Result.ok(bytes.fromhex(s).decode('utf-8'))
     except Exception:
-        return None, "❌ Invalid Hex!"
+        return Result.err("❌ Invalid Hex!")
 
 def decode_url(s):
     try:
         decoded = urllib.parse.unquote(s)
-        # Próba zakodowania do utf-8 żeby zweryfikować poprawność
-        decoded.encode('utf-8')
-        return decoded, None
+        decoded.encode('utf-8')  # Ensure it's valid UTF-8
+        return Result.ok(decoded)
     except Exception:
-        return None, "❌ Invalid URL encoding!"
+        return Result.err("❌ Invalid URL encoding!")
 
 def main():
     clear_screen()
@@ -56,24 +74,24 @@ def main():
         data = Prompt.ask("[bold blue]Paste your encoded text[/bold blue]")
 
         if choice == "1":
-            result, error = decode_base64(data)
+            result = decode_base64(data)
         elif choice == "2":
-            result, error = decode_hex(data)
+            result = decode_hex(data)
         else:
-            result, error = decode_url(data)
+            result = decode_url(data)
 
-        if error:
+        if result.is_err():
             clear_screen()
-            console.print(Panel(f"[bold red]{error}[/bold red]", border_style="red"))
+            console.print(Panel(f"[bold red]{result.err}[/bold red]", border_style="red"))
             console.print("[yellow]Press Enter to return to menu...[/yellow]")
             input()
             clear_screen()
             console.print(Panel("[bold cyan]Welcome to DecodeIt - Easy decoding tool[/bold cyan]", expand=False))
             continue
 
+        # Display result with nice animation
         console.print(Panel("[cyan]➡️ Result:[/cyan]", border_style="cyan"))
-
-        for char in result:
+        for char in result.ok:
             print(char, end='', flush=True)
             time.sleep(0.01)
         print()
