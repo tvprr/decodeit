@@ -25,6 +25,7 @@ This tool is perfect for developers, security researchers, and anyone needing to
 3. download this in cmd:
 pip install rich
 pip install colorama
+pip install pyperclip
 
 ```bash
 
