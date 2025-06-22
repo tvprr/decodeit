@@ -26,6 +26,7 @@ This tool is perfect for developers, security researchers, and anyone needing to
 pip install rich
 pip install colorama
 pip install pyperclip
+pip install customtkinter
 
 ```bash
 
