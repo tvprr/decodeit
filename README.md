@@ -3,7 +3,11 @@
 DecodeIt is a simple and intuitive command-line application written in Python that allows you to decode various encoded data formats such as Base64, Hexadecimal, and URL encoding.  
 This tool is perfect for developers, security researchers, and anyone needing to quickly decode encoded strings during debugging, data analysis, or penetration testing.
 
+---
+### Version
 
+- Version 3.0 will be released in March 2026.
+- The latest version is 2.5.
 ---
 
 ## Features
