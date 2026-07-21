@@ -7,7 +7,7 @@ This tool is perfect for developers, security researchers, and anyone needing to
 ### Version
 
 - Version 3.0 will be released in November 2026.
-- The latest version is 2.5.
+- The latest version is 2.6.1
 ---
 
 ## Features
