@@ -11,7 +11,7 @@ ctk.set_default_color_theme("blue")
 
 app = ctk.CTk()
 app.geometry("800x520")
-app.title("DecodeIt v2.5")
+app.title("DecodeIt v2.6.1")
 
 # ------------------------- Decode & Encode Logic ----------------------------
 def decode_base64(s):
@@ -169,6 +169,6 @@ history_box.pack(fill="both", expand=True, padx=10, pady=10)
 
 # ------------------------- Settings Tab ----------------------------
 ctk.CTkButton(tab_settings, text="🌓 Toggle Theme", command=toggle_theme).pack(pady=10)
-ctk.CTkLabel(tab_settings, text=f"DecodeIt v2.5\n{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}", text_color="gray").pack(pady=10)
+ctk.CTkLabel(tab_settings, text=f"DecodeIt v2.6.1\n{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}", text_color="gray").pack(pady=10)
 
 app.mainloop()
